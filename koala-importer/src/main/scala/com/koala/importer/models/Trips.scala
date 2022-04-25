@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class trips(
+case class Trips(
                   routeId: String,
                   serviceId: String,
                   tripId: String,

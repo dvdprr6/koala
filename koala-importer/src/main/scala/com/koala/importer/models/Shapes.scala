@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class shapes(
+case class Shapes(
                    shapeId: String,
                    shapePtLat: String,
                    shapePtLon: String,

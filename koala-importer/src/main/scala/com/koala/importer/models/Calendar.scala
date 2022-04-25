@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class calendar(
+case class Calendar(
                      serviceId: String,
                      monday: String,
                      tuesday: String,

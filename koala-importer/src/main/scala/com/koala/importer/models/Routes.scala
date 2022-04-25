@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class routes(
+case class Routes(
                    routeId: String,
                    agencyId: String,
                    routeShortName: String,

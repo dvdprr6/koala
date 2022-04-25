@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class agency(
+case class Agency(
                    agencyId: String,
                    agencyName: String,
                    agencyUrl: String,

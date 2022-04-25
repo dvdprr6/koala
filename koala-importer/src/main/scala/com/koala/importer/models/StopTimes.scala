@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class stopTimes(
+case class StopTimes(
                       tripId: String,
                       arrivalTime: String,
                       departureTime: String,

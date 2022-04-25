@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class fareAttributes(
+case class FareAttributes(
                            fareId: String,
                            price: String,
                            currencyType: String,

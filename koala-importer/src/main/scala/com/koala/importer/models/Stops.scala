@@ -1,6 +1,6 @@
 package com.koala.importer.models
 
-case class stops(
+case class Stops(
                   stopId: String,
                   stopCode: String,
                   stopName: String,
