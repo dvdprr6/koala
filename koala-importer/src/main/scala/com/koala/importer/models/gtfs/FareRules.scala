@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class FareRules(
                       fareId: String,
@@ -6,4 +6,4 @@ case class FareRules(
                       originId: String,
                       destinationId: String,
                       containsId: String
-                    )
+                    ) extends STM

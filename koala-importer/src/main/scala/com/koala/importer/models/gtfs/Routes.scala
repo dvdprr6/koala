@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class Routes(
                    routeId: String,
@@ -9,4 +9,4 @@ case class Routes(
                    routeUrl: String,
                    routeColor: String,
                    routeTextColor: String
-                 )
+                 ) extends STM

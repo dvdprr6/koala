@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class FareAttributes(
                            fareId: String,
@@ -7,4 +7,4 @@ case class FareAttributes(
                            paymentMethod: String,
                            transfers: String,
                            transferDuration: String
-                         )
+                         ) extends STM

@@ -1,16 +1,19 @@
 package com.koala.importer
 import com.koala.importer.compositions.ApplicationContextComposition.ApplicationContextCompositionEnv
-import com.koala.importer.compositions.{ApplicationContextComposition, CommandLineOptionComposition, FileComposition}
+import com.koala.importer.compositions.{ApplicationContextComposition, CommandLineOptionComposition, EnrichmentComposition, FileComposition}
 import com.koala.importer.compositions.CommandLineOptionComposition.CommandLineOptionCompositionEnv
+import com.koala.importer.compositions.EnrichmentComposition.EnrichmentCompositionEnv
 import com.koala.importer.compositions.FileComposition.FileCompositionEnv
-import com.koala.importer.models.{Agency, Calendar, CalendarDates, CommandLineOptions, FareAttributes, FareRules, FeedInfo, Frequencies, Routes, Shapes, StopTimes, Stops, Trips}
-import com.koala.importer.services.{ApplicationContextService, CommandLineOptionService, FileService, SparkConnectionService}
+import com.koala.importer.models.common.CommandLineOptions
+import com.koala.importer.models.gtfs.{Agency, Calendar, CalendarDates, FareAttributes, FareRules, FeedInfo, Frequencies, Routes, STM, Shapes, StopTimes, Stops, Trips}
+import com.koala.importer.services.{ApplicationContextService, CommandLineOptionService, EnrichmentService, FileService, SparkConnectionService}
 import org.apache.spark.sql.Encoders
 import zio.cli.CliApp
 import zio.cli.HelpDoc.Span.text
 import zio.{ExitCode, RIO, URIO, ZEnv, ZLayer}
 
 object Main extends zio.App {
+  private implicit val stmEncoder = Encoders.product[STM]
   private implicit val agencyEncoder = Encoders.product[Agency]
   private implicit val calendarEncoder = Encoders.product[Calendar]
   private implicit val calendarDatesEncoder = Encoders.product[CalendarDates]
@@ -47,6 +50,7 @@ object Main extends zio.App {
       stopsDataset <- FileComposition.readFile[Routes](applicationContext).provideLayer(fileCompositionLayer)
       stopTimesDataset <- FileComposition.readFile[StopTimes](applicationContext).provideLayer(fileCompositionLayer)
       tripsDataset <- FileComposition.readFile[Trips](applicationContext).provideLayer(fileCompositionLayer)
+      agencyEnrichWithPartitionDate <- EnrichmentComposition.enrichmentWithPartitionDate[Agency](agencyDataset, applicationContext).provideLayer(enrichmentCompositionLayer)
     } yield ()
 
   private lazy val commandLineOptionsLayer: ZLayer[ZEnv, Nothing, CommandLineOptionCompositionEnv] =
@@ -57,5 +61,8 @@ object Main extends zio.App {
 
   private lazy val fileCompositionLayer: ZLayer[ZEnv, Throwable, FileCompositionEnv] =
     FileService.live >>> FileComposition.live
+
+  private lazy val enrichmentCompositionLayer: ZLayer[ZEnv, Throwable, EnrichmentCompositionEnv] =
+    EnrichmentService.live >>> EnrichmentComposition.live
 }
 

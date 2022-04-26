@@ -5,16 +5,16 @@ import org.apache.spark.sql.SparkSession
 import zio.{Has, RIO, Task, ZEnv, ZIO, ZLayer}
 
 object SparkConnectionService {
-  type SparkConnectionEnv = Has[SparkConnectionService.Service]
+  type SparkConnectionServiceEnv = Has[SparkConnectionService.Service]
 
   trait Service{
     def getSparkSession(): Task[SparkSession]
   }
 
-  def getSparkSession(): RIO[SparkConnectionEnv, SparkSession] =
+  def getSparkSession(): RIO[SparkConnectionServiceEnv, SparkSession] =
     ZIO.accessM(_.get.getSparkSession())
 
-  lazy val live: ZLayer[ZEnv, Nothing, SparkConnectionEnv] =
+  lazy val live: ZLayer[ZEnv, Nothing, SparkConnectionServiceEnv] =
     ZLayer.succeed(() => {
       Task{
         SparkSession.builder()

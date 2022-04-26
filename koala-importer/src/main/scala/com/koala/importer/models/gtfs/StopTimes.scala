@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class StopTimes(
                       tripId: String,
@@ -6,4 +6,4 @@ case class StopTimes(
                       departureTime: String,
                       stopId: String,
                       stopSequence: String
-                    )
+                    ) extends STM

@@ -1,8 +1,8 @@
 package com.koala.importer.compositions
 
-import com.koala.importer.models.{ApplicationContext, CommandLineOptions}
-import com.koala.importer.services.ApplicationContextService.ApplicationContextEnv
-import com.koala.importer.services.SparkConnectionService.SparkConnectionEnv
+import com.koala.importer.models.common.{ApplicationContext, CommandLineOptions}
+import com.koala.importer.services.ApplicationContextService.ApplicationContextServiceEnv
+import com.koala.importer.services.SparkConnectionService.SparkConnectionServiceEnv
 import com.koala.importer.services.{ApplicationContextService, SparkConnectionService}
 import zio.{Has, RIO, Task, ZIO, ZLayer}
 
@@ -20,7 +20,7 @@ object ApplicationContextComposition {
   def build(commandLineOptions: CommandLineOptions): RIO[ApplicationContextCompositionEnv, ApplicationContext] =
     ZIO.accessM(_.get.build(commandLineOptions))
 
-  lazy val live: ZLayer[SparkConnectionEnv with ApplicationContextEnv, Nothing, ApplicationContextCompositionEnv] =
+  lazy val live: ZLayer[SparkConnectionServiceEnv with ApplicationContextServiceEnv, Nothing, ApplicationContextCompositionEnv] =
     ZLayer.fromServices[SparkConnectionService.Service, ApplicationContextService.Service, ApplicationContextComposition.Service]{
       (sparkConnectionService, applicationContextService) => new Service(sparkConnectionService, applicationContextService)
     }

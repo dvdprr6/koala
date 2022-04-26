@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.common
 
 import org.apache.spark.sql.SparkSession
 

@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class Stops(
                   stopId: String,
@@ -10,4 +10,4 @@ case class Stops(
                   locationType: String,
                   parentStation: String,
                   wheelchairBoarding: String
-                )
+                ) extends STM

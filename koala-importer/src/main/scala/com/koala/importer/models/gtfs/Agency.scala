@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class Agency(
                    agencyId: String,
@@ -8,4 +8,4 @@ case class Agency(
                    agencyLang: String,
                    agencyPhone: String,
                    agencyFareUrl: String
-                 )
+                 ) extends STM

@@ -1,4 +1,4 @@
-package com.koala.importer.models
+package com.koala.importer.models.gtfs
 
 case class FeedInfo(
                      feedPublisherName: String,
@@ -6,4 +6,4 @@ case class FeedInfo(
                      feedLang: String,
                      feedStartDate: String,
                      feedEndDate: String
-                   )
+                   ) extends STM

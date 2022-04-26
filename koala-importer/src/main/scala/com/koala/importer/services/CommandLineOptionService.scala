@@ -1,11 +1,11 @@
 package com.koala.importer.services
 
-import com.koala.importer.models.CommandLineOptions
+import com.koala.importer.models.common.CommandLineOptions
 import zio.{Has, RIO, Task, ZEnv, ZIO, ZLayer}
 import zio.cli.{Command, Options}
 
 object CommandLineOptionService {
-  type CommandLineOptionEnv = Has[CommandLineOptionService.Service]
+  type CommandLineOptionServiceEnv = Has[CommandLineOptionService.Service]
 
   trait Service{
     def parseCommandLineOptions(): Task[Command[CommandLineOptions]]
@@ -14,10 +14,10 @@ object CommandLineOptionService {
   private val input: Options[String] = Options.text("input")
   private val date: Options[String] = Options.text("date")
 
-  def parseCommandLineOptions(): RIO[CommandLineOptionEnv, Command[CommandLineOptions]] =
+  def parseCommandLineOptions(): RIO[CommandLineOptionServiceEnv, Command[CommandLineOptions]] =
     ZIO.accessM(_.get.parseCommandLineOptions())
 
-  lazy val live: ZLayer[ZEnv, Nothing, CommandLineOptionEnv] =
+  lazy val live: ZLayer[ZEnv, Nothing, CommandLineOptionServiceEnv] =
     ZLayer.succeed(() => {
       Task {
         val options = (input ++ date).as(CommandLineOptions)
