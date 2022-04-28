@@ -1,9 +1,9 @@
 package com.koala.importer.models.gtfs
 
 case class FareRules(
-                      fareId: String,
-                      routeId: String,
-                      originId: String,
-                      destinationId: String,
-                      containsId: String
-                    ) extends STM
+                      fare_id: String,
+                      route_id: String,
+                      origin_id: String,
+                      destination_id: String,
+                      contains_id: String
+                    ) extends GTFS

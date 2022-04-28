@@ -1,13 +1,13 @@
 package com.koala.importer.models.gtfs
 
 case class Stops(
-                  stopId: String,
-                  stopCode: String,
-                  stopName: String,
-                  stopLat: String,
-                  stopLon: String,
-                  stopUrl: String,
-                  locationType: String,
-                  parentStation: String,
-                  wheelchairBoarding: String
-                ) extends STM
+                  stop_id: String,
+                  stop_code: String,
+                  stop_name: String,
+                  stop_lat: String,
+                  stop_lon: String,
+                  stop_url: String,
+                  location_type: String,
+                  parent_station: String,
+                  wheelchair_boarding: String
+                ) extends GTFS

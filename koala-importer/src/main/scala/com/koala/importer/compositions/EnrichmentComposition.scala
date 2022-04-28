@@ -1,7 +1,7 @@
 package com.koala.importer.compositions
 
 import com.koala.importer.models.common.ApplicationContext
-import com.koala.importer.models.gtfs.STM
+import com.koala.importer.models.gtfs.GTFS
 import com.koala.importer.services.EnrichmentService
 import com.koala.importer.services.EnrichmentService.EnrichmentServiceEnv
 import org.apache.spark.sql.{Dataset, Encoder}
@@ -11,14 +11,14 @@ object EnrichmentComposition {
   type EnrichmentCompositionEnv = Has[EnrichmentComposition.Service]
 
   class Service(enrichmentService: EnrichmentService.Service){
-    def enrichmentWithPartitionDate[T <: STM](dataset: Dataset[T], applicationContext: ApplicationContext)(implicit encoder0: Encoder[STM], encoder1: Encoder[T]): UIO[Dataset[T]] = {
+    def enrichmentWithPartitionDate[T <: GTFS](dataset: Dataset[T], applicationContext: ApplicationContext)(implicit encoder0: Encoder[GTFS], encoder1: Encoder[T]): UIO[Dataset[T]] = {
       val partitionDate = applicationContext.commandLineOptions.date
 
       enrichmentService.enrichWithPartitionDate[T](dataset, partitionDate)
     }
   }
 
-  def enrichmentWithPartitionDate[T <: STM](dataset: Dataset[T], applicationContext: ApplicationContext)(implicit encoder0: Encoder[STM], encoder1: Encoder[T]): RIO[EnrichmentCompositionEnv, Dataset[T]] =
+  def enrichmentWithPartitionDate[T <: GTFS](dataset: Dataset[T], applicationContext: ApplicationContext)(implicit encoder0: Encoder[GTFS], encoder1: Encoder[T]): RIO[EnrichmentCompositionEnv, Dataset[T]] =
     ZIO.accessM(_.get.enrichmentWithPartitionDate(dataset, applicationContext))
 
   lazy val live: ZLayer[EnrichmentServiceEnv, Throwable, EnrichmentCompositionEnv] =

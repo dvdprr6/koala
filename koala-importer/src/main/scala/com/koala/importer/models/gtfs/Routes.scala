@@ -1,12 +1,12 @@
 package com.koala.importer.models.gtfs
 
 case class Routes(
-                   routeId: String,
-                   agencyId: String,
-                   routeShortName: String,
-                   routeLongName: String,
-                   routeType: String,
-                   routeUrl: String,
-                   routeColor: String,
-                   routeTextColor: String
-                 ) extends STM
+                   route_id: String,
+                   agency_id: String,
+                   route_short_name: String,
+                   route_long_name: String,
+                   route_type: String,
+                   route_url: String,
+                   route_color: String,
+                   route_text_color: String
+                 ) extends GTFS

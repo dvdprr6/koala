@@ -1,10 +1,10 @@
 package com.koala.importer.models.gtfs
 
 case class FareAttributes(
-                           fareId: String,
+                           fare_id: String,
                            price: String,
-                           currencyType: String,
-                           paymentMethod: String,
+                           currency_type: String,
+                           payment_method: String,
                            transfers: String,
-                           transferDuration: String
-                         ) extends STM
+                           transfer_duration: String
+                         ) extends GTFS

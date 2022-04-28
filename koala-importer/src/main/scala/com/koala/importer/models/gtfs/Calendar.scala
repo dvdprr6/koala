@@ -1,7 +1,7 @@
 package com.koala.importer.models.gtfs
 
 case class Calendar(
-                     serviceId: String,
+                     service_id: String,
                      monday: String,
                      tuesday: String,
                      wednesday: String,
@@ -9,6 +9,6 @@ case class Calendar(
                      friday: String,
                      saturday: String,
                      sunday: String,
-                     startDate: String,
-                     endDate: String
-                   ) extends STM
+                     start_date: String,
+                     end_date: String
+                   ) extends GTFS

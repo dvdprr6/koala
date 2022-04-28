@@ -1,11 +1,11 @@
 package com.koala.importer.models.gtfs
 
 case class Agency(
-                   agencyId: String,
-                   agencyName: String,
-                   agencyUrl: String,
-                   agencyTimezone: String,
-                   agencyLang: String,
-                   agencyPhone: String,
-                   agencyFareUrl: String
-                 ) extends STM
+                   agency_id: String,
+                   agency_name: String,
+                   agency_url: String,
+                   agency_timezone: String,
+                   agency_lang: String,
+                   agency_phone: String,
+                   agency_fare_url: String
+                 ) extends GTFS

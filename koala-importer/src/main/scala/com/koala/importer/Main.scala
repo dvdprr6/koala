@@ -5,7 +5,7 @@ import com.koala.importer.compositions.CommandLineOptionComposition.CommandLineO
 import com.koala.importer.compositions.EnrichmentComposition.EnrichmentCompositionEnv
 import com.koala.importer.compositions.FileComposition.FileCompositionEnv
 import com.koala.importer.models.common.CommandLineOptions
-import com.koala.importer.models.gtfs.{Agency, Calendar, CalendarDates, FareAttributes, FareRules, FeedInfo, Frequencies, Routes, STM, Shapes, StopTimes, Stops, Trips}
+import com.koala.importer.models.gtfs.{Agency, Calendar, CalendarDates, FareAttributes, FareRules, FeedInfo, Frequencies, Routes, Shapes, StopTimes, Stops, Trips}
 import com.koala.importer.services.{ApplicationContextService, CommandLineOptionService, EnrichmentService, FileService, SparkConnectionService}
 import org.apache.spark.sql.Encoders
 import zio.cli.CliApp
@@ -13,7 +13,6 @@ import zio.cli.HelpDoc.Span.text
 import zio.{ExitCode, RIO, URIO, ZEnv, ZLayer}
 
 object Main extends zio.App {
-  private implicit val stmEncoder = Encoders.product[STM]
   private implicit val agencyEncoder = Encoders.product[Agency]
   private implicit val calendarEncoder = Encoders.product[Calendar]
   private implicit val calendarDatesEncoder = Encoders.product[CalendarDates]
@@ -38,19 +37,19 @@ object Main extends zio.App {
   private def execute(params: CommandLineOptions): RIO[zio.ZEnv, Unit] =
     for{
       applicationContext <- ApplicationContextComposition.build(params).provideLayer(applicationContextCompositionLayer)
-      agencyDataset <- FileComposition.readFile[Agency](applicationContext).provideLayer(fileCompositionLayer)
-      calendarDataset <- FileComposition.readFile[Calendar](applicationContext).provideLayer(fileCompositionLayer)
-      calendarDatesDataset <- FileComposition.readFile[CalendarDates](applicationContext).provideLayer(fileCompositionLayer)
-      fareAttributesDataset <- FileComposition.readFile[FareAttributes](applicationContext).provideLayer(fileCompositionLayer)
-      fareRulesDataset <- FileComposition.readFile[FareRules](applicationContext).provideLayer(fileCompositionLayer)
-      feedInfoDataset <- FileComposition.readFile[FeedInfo](applicationContext).provideLayer(fileCompositionLayer)
-      frequenciesDataset <- FileComposition.readFile[Frequencies](applicationContext).provideLayer(fileCompositionLayer)
-      routesDataset <- FileComposition.readFile[Routes](applicationContext).provideLayer(fileCompositionLayer)
-      shapesDataset <- FileComposition.readFile[Shapes](applicationContext).provideLayer(fileCompositionLayer)
-      stopsDataset <- FileComposition.readFile[Routes](applicationContext).provideLayer(fileCompositionLayer)
-      stopTimesDataset <- FileComposition.readFile[StopTimes](applicationContext).provideLayer(fileCompositionLayer)
-      tripsDataset <- FileComposition.readFile[Trips](applicationContext).provideLayer(fileCompositionLayer)
-      agencyEnrichWithPartitionDate <- EnrichmentComposition.enrichmentWithPartitionDate[Agency](agencyDataset, applicationContext).provideLayer(enrichmentCompositionLayer)
+      agencyDataset <- FileComposition.readAgencyFile(applicationContext).provideLayer(fileCompositionLayer)
+      calendarDataset <- FileComposition.readCalendarFile(applicationContext).provideLayer(fileCompositionLayer)
+      calendarDatesDataset <- FileComposition.readCalendarDatesFile(applicationContext).provideLayer(fileCompositionLayer)
+      fareAttributesDataset <- FileComposition.readFareAttributesFile(applicationContext).provideLayer(fileCompositionLayer)
+      fareRulesDataset <- FileComposition.readFareRulesFile(applicationContext).provideLayer(fileCompositionLayer)
+      feedInfoDataset <- FileComposition.readFeedInfoFile(applicationContext).provideLayer(fileCompositionLayer)
+      frequenciesDataset <- FileComposition.readFrequenciesFile(applicationContext).provideLayer(fileCompositionLayer)
+      routesDataset <- FileComposition.readRoutesFile(applicationContext).provideLayer(fileCompositionLayer)
+      shapesDataset <- FileComposition.readShapesFile(applicationContext).provideLayer(fileCompositionLayer)
+      stopsDataset <- FileComposition.readStopsFile(applicationContext).provideLayer(fileCompositionLayer)
+      stopTimesDataset <- FileComposition.readStopTimesFile(applicationContext).provideLayer(fileCompositionLayer)
+      tripsDataset <- FileComposition.readTripsFile(applicationContext).provideLayer(fileCompositionLayer)
+//      agencyEnrichWithPartitionDate <- EnrichmentComposition.enrichmentWithPartitionDate[Agency](agencyDataset, applicationContext).provideLayer(enrichmentCompositionLayer)
     } yield ()
 
   private lazy val commandLineOptionsLayer: ZLayer[ZEnv, Nothing, CommandLineOptionCompositionEnv] =
