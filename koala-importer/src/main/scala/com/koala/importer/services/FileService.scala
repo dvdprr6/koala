@@ -1,7 +1,8 @@
 package com.koala.importer.services
 
+import com.koala.importer.models.enrichment.Transform
 import com.koala.importer.models.gtfs.GTFS
-import org.apache.spark.sql.{Dataset, Encoder, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoder, SaveMode, SparkSession}
 import zio.{Has, RIO, Task, ZEnv, ZIO, ZLayer}
 
 object FileService {
@@ -9,14 +10,14 @@ object FileService {
 
   trait Service{
     def readFile[T <: GTFS](input: String)(implicit sparkSession: SparkSession, encoder: Encoder[T]): Task[Dataset[T]]
-    def importToHive[T <: GTFS](dataset: Dataset[T], partition: String)(implicit sparkSession: SparkSession): Task[Unit]
+    def importToHive[T <: Transform](dataset: Dataset[T], partition: String, tableName: String): Task[Unit]
   }
 
   def readFile[T <: GTFS](input: String)(implicit sparkSession: SparkSession, encoder: Encoder[T]): RIO[FileServiceEnv, Dataset[T]] =
     ZIO.accessM(_.get.readFile[T](input))
 
-  def importToHive[T <: GTFS](dataset: Dataset[T], partition: String)(implicit sparkSession: SparkSession): RIO[FileServiceEnv, Unit] =
-    ZIO.accessM(_.get.importToHive[T](dataset, partition))
+  def importToHive[T <: Transform](dataset: Dataset[T], partition: String, tableName: String): RIO[FileServiceEnv, Unit] =
+    ZIO.accessM(_.get.importToHive[T](dataset, partition, tableName))
 
   lazy val live: ZLayer[ZEnv, Throwable, FileServiceEnv] =
     ZLayer.succeed(new Service {
@@ -30,7 +31,14 @@ object FileService {
             .as[T]
         }
 
-      override def importToHive[T <: GTFS](dataset: Dataset[T], partition: String)(implicit sparkSession: SparkSession): Task[Unit] = ???
+      override def importToHive[T <: Transform](dataset: Dataset[T], partition: String, tableName: String): Task[Unit] =
+        Task{
+          dataset.repartition(1).write
+            .format("csv")
+            .mode(SaveMode.Overwrite)
+            .partitionBy(partition)
+            .saveAsTable(tableName)
+        }
     })
 
 }
