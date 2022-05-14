@@ -2,10 +2,10 @@ package com.koala.importer.compositions
 
 import com.koala.importer.models.common.ApplicationContext
 import com.koala.importer.models.enrichment.{AgencyTransform, CalendarDatesTransform, CalendarTransform, FareAttributesTransform, FareRulesTransform, FeedInfoTransform, FrequenciesTransform, RoutesTransform, ShapesTransform, StopTimesTransform, StopsTransform, TripsTransform}
-import com.koala.importer.models.gtfs.{Agency, Calendar, CalendarDates, FareAttributes, FareRules, FeedInfo, Frequencies, GTFS, Routes, Shapes, StopTimes, Stops, Trips}
+import com.koala.importer.models.gtfs.{Agency, Calendar, CalendarDates, FareAttributes, FareRules, FeedInfo, Frequencies, Routes, Shapes, StopTimes, Stops, Trips}
 import com.koala.importer.services.TransformService.TransformServiceEnv
 import org.apache.spark.sql.{Dataset, Encoder}
-import zio.{Has, RIO, UIO, URIO, ZEnv, ZIO, ZLayer}
+import zio.{Has, UIO, URIO, ZIO, ZLayer}
 
 object TransformComposition {
   type TransformCompositionEnv = Has[TransformComposition.Service]
