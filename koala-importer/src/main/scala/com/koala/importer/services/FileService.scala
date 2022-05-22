@@ -34,7 +34,7 @@ object FileService {
       override def importToHive[T <: Transform](dataset: Dataset[T], partition: String, tableName: String): Task[Unit] =
         Task{
           dataset.repartition(1).write
-            .format("csv")
+            .format("Hive")
             .mode(SaveMode.Overwrite)
             .partitionBy(partition)
             .saveAsTable(tableName)

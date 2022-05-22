@@ -19,6 +19,7 @@ object SparkConnectionService {
       Task{
         SparkSession.builder()
           .appName(APP_NAME)
+          .config("hive.exec.dynamic.partition.mode", "nonstrict")
           .enableHiveSupport()
           .master("local[*]")
           .getOrCreate()
